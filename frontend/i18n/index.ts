@@ -1,11 +1,13 @@
+
+
 export default defineI18nConfig(() => ({
   legacy: false,
   locale: 'en',
   messages: {
-    us: {
+    en: {
       welcome: 'Welcome'
     },
-    tw: {
+    fr: {
       welcome: 'Bienvenue'
     }
   }

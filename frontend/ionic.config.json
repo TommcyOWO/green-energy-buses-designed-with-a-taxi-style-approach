@@ -1,7 +1,5 @@
 {
   "name": "nuxt-app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "custom"
+  "integrations": {},
+  "type": "vue"
 }
