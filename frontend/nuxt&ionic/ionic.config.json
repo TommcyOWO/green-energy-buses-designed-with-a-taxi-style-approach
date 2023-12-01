@@ -1,0 +1,7 @@
+{
+  "name": "taxi-style-green-energy-bus",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}

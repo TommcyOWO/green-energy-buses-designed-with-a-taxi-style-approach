@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">計程車式綠能巴士</string>
+    <string name="title_activity_main">計程車式綠能巴士</string>
+    <string name="package_name">nuxt.app</string>
+    <string name="custom_url_scheme">nuxt.app</string>
+</resources>
