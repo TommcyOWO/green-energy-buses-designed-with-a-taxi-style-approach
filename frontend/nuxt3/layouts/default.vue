@@ -10,7 +10,7 @@
     </div>
     <div class="flex ai:center@>md px:10px {py:10px;rel}@<md text:center">
       <button @click="moveTo('account-login')" class="btn mx:10 cursor:pointer">登入/註冊</button>
-      <a href="https://github.com/TommcyOWO/taxi-style-green-energy-bus" target="_blank"><IconBrandGithub color="black" class=" mx:10"/></a>
+      <a href="https://github.com/TommcyOWO/taxi-style-green-energy-bus" target="_blank"><IconBrandGithub color="black" class="m:10"/></a>
     </div>
   </div>
   <slot/>
@@ -22,7 +22,8 @@ import { init, Style } from '@master/css';
 import "axios";
 
 Style.extend('classes', {
-  btn: 'inline-flex center-content font:14 font:semibold b:3|solid font:black bg:white px:18 h:40 r:4'
+  btn: 'inline-flex center-content font:14 font:semibold b:3|solid font:black bg:white px:18 h:40 r:4',
+  acinpu: 'h:30px w:200px shadow:0|1|black border:none outline:none'
 })
 init()
 const router = useRouter();
