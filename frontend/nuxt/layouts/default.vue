@@ -19,6 +19,8 @@
 <script setup lang="ts">
 import { IconBrandGithub,IconMenu2} from "@tabler/icons-vue";
 import { init, Style } from '@master/css';
+import "axios";
+
 Style.extend('classes', {
   btn: 'inline-flex center-content font:14 font:semibold b:3|solid font:black bg:white px:18 h:40 r:4'
 })
