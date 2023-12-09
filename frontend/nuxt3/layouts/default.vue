@@ -22,8 +22,8 @@ import { init, Style } from '@master/css';
 import "axios";
 
 Style.extend('classes', {
-  btn: 'inline-flex center-content font:14 font:semibold b:3|solid font:black bg:white px:18 h:40 r:4',
-  acinpu: 'h:30px w:200px shadow:0|1|black border:none outline:none'
+  btn: 'inline-flex center-content font:14 font:semibold b:2|solid font:black bg:white px:18 h:40 r:4',
+  acinpu: 'h:30px w:205px shadow:0|1|black border:none outline:none'
 })
 init()
 const router = useRouter();

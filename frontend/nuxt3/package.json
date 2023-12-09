@@ -21,6 +21,7 @@
   "dependencies": {
     "@master/css": "^1.37.8",
     "@tabler/icons-vue": "^2.42.0",
-    "axios": "^1.6.2"
+    "axios": "^1.6.2",
+    "cookies-ts": "^1.0.5"
   }
 }

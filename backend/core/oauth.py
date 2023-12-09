@@ -16,10 +16,10 @@ load_dotenv()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = "HS256"
+ALGORITHM = "HS512"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+password_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
 
 def create_access_token(data: dict, expires_delta: timedelta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)):
