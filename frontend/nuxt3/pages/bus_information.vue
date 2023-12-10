@@ -11,7 +11,7 @@ const cookies = new Cookies();
 const router = useRouter();
 
 onMounted(() => {
-  cookies.get("auth_key") || router.push({ name: "route_login" })
+  const authKey = cookies.get("auth_key") || router.push({ name: "route_login" })
 })
 
 </script>

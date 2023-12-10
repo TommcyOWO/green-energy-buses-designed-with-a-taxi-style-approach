@@ -35,6 +35,7 @@
 <script setup lang="ts">
 import axios from 'axios';
 import conf from "@/assets/conf"
+import Cookies from 'cookies-ts';
 
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
@@ -43,6 +44,7 @@ const username = ref("")
 const email = ref("")
 const n_password = ref("")
 const v_password = ref("")
+const cookies = new Cookies();
 
 const reset = async () => {
   try {
@@ -66,7 +68,12 @@ const reset = async () => {
   }
 };
 
-
+onMounted(() => {
+  const authKey = cookies.get("auth_key")
+  if (authKey !== null) {
+    moveTo("index")
+  }
+})
 </script>
 
 <style scoped>

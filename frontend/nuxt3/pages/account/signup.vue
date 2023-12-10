@@ -29,8 +29,22 @@
 
 <script setup lang="ts">
 import "axios";
+import Cookies from 'cookies-ts';
+
+const username = ref("")
+const password = ref("")
+const email = ref("")
+
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
+const cookies = new Cookies();
+
+onMounted(() => {
+  const authKey = cookies.get("auth_key")
+  if (authKey !== null) {
+    moveTo("index")
+  }
+})
 </script>
 
 <style scoped>

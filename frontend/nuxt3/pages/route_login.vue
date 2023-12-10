@@ -9,8 +9,14 @@
 </template>
 
 <script setup lang="ts">
+import Cookies from "cookies-ts";
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
+
+const cookies = new Cookies();
+onMounted(() => {
+  const authKey = cookies.get("auth_key") || router.push({ name: "route_login" })
+})
 </script>
 
 <style scoped>

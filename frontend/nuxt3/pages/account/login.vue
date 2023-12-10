@@ -25,7 +25,9 @@
 <script setup lang="ts">
 import axios from 'axios';
 import conf from "@/assets/conf"
+import Cookies from 'cookies-ts';
 
+const cookies = new Cookies();
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
 
@@ -45,11 +47,18 @@ const logon = async () => {
   try {
     const response = await axios.post(conf.urls + 'logon', data, config);
     const token = response.data.access_token;
-    console.log(token)
+    cookies.set("auth_key",token)
+    router.go(0)
   } catch (error:any) {
     console.error(error.response)
   }
 }
+onMounted(()=>{
+  const authKey = cookies.get("auth_key")
+  if(authKey !== null){
+    moveTo("index")
+  }
+})
 </script>
 
 <style scoped>
