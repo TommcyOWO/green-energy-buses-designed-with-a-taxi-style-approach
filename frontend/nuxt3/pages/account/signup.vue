@@ -21,7 +21,7 @@
         <section class=" mx:40px">
           <button @click="moveTo('account-login')" class="btn cursor:pointer">登入</button>
           <button @click="moveTo('account-password_forgot')" class="btn ml:30px cursor:pointer">忘記密碼?</button>
-          <button class="btn w:200px cursor:pointer mt:10px">重製</button>
+          <button class="btn w:200px cursor:pointer mt:10px">註冊</button>
         </section>
       </div>
     </div>
