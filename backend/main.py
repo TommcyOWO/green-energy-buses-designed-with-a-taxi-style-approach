@@ -15,7 +15,7 @@ from core.oauth import *
 
 #database setup
 client = MongoClient("mongodb://localhost:27017/")
-db = client["users"]
+db = client["database"]
 users = db.users
 
 limiter = Limiter(key_func=get_remote_address)

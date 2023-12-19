@@ -1,6 +1,6 @@
 import requests as rq
 
-url = "http://192.168.1.109:5000/logon"  # 將 "你的主機地址" 替換為實際的主機地址
+url = "http://192.168.1.109:5000/start_timer"  # 將 "你的主機地址" 替換為實際的主機地址
 
 def sing_up():
     payload = {
@@ -40,5 +40,8 @@ def reset():# 请将其替换为您实际的API端点URL
     print(response.text)
 
 
+def timer():
+    responses = rq.get(url)
+    print(responses.text)
 
-logon()
+timer()

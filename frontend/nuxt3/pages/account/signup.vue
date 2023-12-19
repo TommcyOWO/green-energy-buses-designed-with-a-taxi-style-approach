@@ -49,7 +49,7 @@ const sign_up = async () => {
   }
   try {
     const response = await axios.post(conf.urls+"sign_up",data)
-    moveTo("account-login")
+    moveTo("account-logon")
   } catch (error) {
     console.error(error);
   }

@@ -10,7 +10,7 @@
     </div>
     <div class="flex ai:center@>md px:10px {py:10px;rel}@<md text:center">
       <button v-if="authKey!=='null'" @click="sign_out()" class="btn mx:10 cursor:pointer">登出</button>
-      <button v-else @click="moveTo('account-login')" class="btn mx:10 cursor:pointer">登入/註冊</button>
+      <button v-else @click="moveTo('account-logon')" class="btn mx:10 cursor:pointer">登入/註冊</button>
       <a href="https://github.com/TommcyOWO/taxi-style-green-energy-bus" target="_blank">
         <IconBrandGithub color="black" class="m:10" />
       </a>
@@ -27,7 +27,8 @@ import Cookies from "cookies-ts"
 
 Style.extend('classes', {
   btn: 'inline-flex center-content font:14 font:semibold b:2|solid font:black bg:white px:18 h:40 r:4',
-  acinpu: 'h:30px w:205px shadow:0|1|black border:none outline:none'
+  acinpu: 'h:30px w:205px shadow:0|1|black border:none outline:none',
+  tselect:'my:5px h:25px b:2|solid bg:white outline:none r:4px'
 })
 init()
 const router = useRouter();
