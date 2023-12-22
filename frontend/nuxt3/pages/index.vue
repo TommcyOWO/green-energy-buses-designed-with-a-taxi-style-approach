@@ -1,5 +1,5 @@
 <template>
-  <div class="abs top:100px left:50% translate(-50%,50%)
+  <div class="abs top:50% left:50% translate(-50%,-50%)
     b:2px|solid rbr:20">
     <nav class="mx:60px mt:60px">
       <span class="block">
