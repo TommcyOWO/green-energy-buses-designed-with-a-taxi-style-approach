@@ -24,7 +24,7 @@
           </span>
         </nav>
         <section class="mt:20px mx:40px">
-          <button @click="moveTo('account-logon')" class="btn cursor:pointer">登入</button>
+          <button @click="moveTo('account-login')" class="btn cursor:pointer">登入</button>
           <button @click="moveTo('account-signup')" class="btn ml:65px cursor:pointer">註冊</button>
           <button @click="reset()" class="btn w:200px cursor:pointer mt:10px">重製</button>
         </section>

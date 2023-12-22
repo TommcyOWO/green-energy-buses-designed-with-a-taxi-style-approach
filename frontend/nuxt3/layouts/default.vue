@@ -10,7 +10,7 @@
     </div>
     <div class="flex ai:center@>md px:10px {py:10px;rel}@<md text:center">
       <button v-if="authKey!=='null'" @click="sign_out()" class="btn mx:10 cursor:pointer">登出</button>
-      <button v-else @click="moveTo('account-logon')" class="btn mx:10 cursor:pointer">登入/註冊</button>
+      <button v-else @click="moveTo('account-login')" class="btn mx:10 cursor:pointer">登入/註冊</button>
       <a href="https://github.com/TommcyOWO/taxi-style-green-energy-bus" target="_blank">
         <IconBrandGithub color="black" class="m:10" />
       </a>

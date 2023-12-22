@@ -3,7 +3,7 @@
   <div>
     <h2>您尚未登入或註冊</h2>
     <h4>You are not logged in or registered yet.</h4>
-    <button @click="moveTo('account-logon')" class="btn mt:20px cursor:pointer">登入/註冊</button>
+    <button @click="moveTo('account-login')" class="btn mt:20px cursor:pointer">登入/註冊</button>
   </div>
   </div>
 </template>
