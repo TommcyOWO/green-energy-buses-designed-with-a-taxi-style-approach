@@ -6,6 +6,7 @@
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('index')">叫車服務</li>
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_information')">公車資訊</li>
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_stops')">公車站點</li>
+        <!-- <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_stops')">公車站點</li> -->
       </ul>
     </div>
     <div class="flex ai:center@>md px:10px {py:10px;rel}@<md text:center">
@@ -22,7 +23,6 @@
 <script setup lang="ts">
 import { IconBrandGithub, IconMenu2 } from "@tabler/icons-vue";
 import { init, Style } from '@master/css';
-import "axios";
 import Cookies from "cookies-ts"
 
 Style.extend('classes', {
@@ -47,6 +47,7 @@ onMounted(() => {
     const authCookie = cookies.get("auth_key");
     if (authCookie !== null) {
       authKey.value = authCookie;
+
     }
   } catch (error: any) {
     console.error(error);

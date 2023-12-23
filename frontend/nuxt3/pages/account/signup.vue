@@ -1,6 +1,6 @@
 <template>
     <div class="abs top:50% left:50% translate(-50%,-50%)">
-      <div class="h:450px w:300px rbr:40 b:2.3|solid bg:white">
+      <div class="w:300px rbr:40 b:2.3|solid bg:white">
         <nav class="mt:20px m:40px">
           <span class="block pt:10px">
             <h2>使用者名稱</h2>
@@ -17,8 +17,16 @@
             <h4>Password</h4>
             <input v-model="password" class="acinpu" type="password">
           </span>
+          <span class="block my:10px">
+              <h2>身分</h2>
+              <h4>Identity</h4>
+              <select v-model="identity">
+                <option value="passenger">乘客|Passenger</option>
+                <option value="driver">司機|Driver</option>
+              </select>
+          </span>
         </nav>
-        <section class=" mx:40px">
+        <section class=" mx:40px mb:20px">
           <button @click="moveTo('account-login')" class="btn cursor:pointer">登入</button>
           <button @click="moveTo('account-password_forgot')" class="btn ml:30px cursor:pointer">忘記密碼?</button>
           <button @click="sign_up()" class="btn w:200px cursor:pointer mt:10px">註冊</button>
@@ -35,6 +43,7 @@ import conf from "@/assets/conf";
 const username = ref("")
 const password = ref("")
 const email = ref("")
+const identity = ref("passenger")
 
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
@@ -49,7 +58,7 @@ const sign_up = async () => {
   }
   try {
     const response = await axios.post(conf.urls+"sign_up",data)
-    moveTo("account-logon")
+    moveTo("account-login")
   } catch (error) {
     console.error(error);
   }

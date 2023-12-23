@@ -79,6 +79,7 @@ async def user_sign_up(user: sign_up_reset):
     hashed_password = password_context.hash(user.password)
     users_db = {
         "email": user.email,
+        "driver":user.driver,
         "username": user.username,
         "password": hashed_password
     }
@@ -98,7 +99,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             status_code=400, detail="Incorrect username or password")
 
     access_token = create_access_token(data={"sub": password})
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {"access_token": access_token, "token_type": "bearer","user_type":users_db["type"]}
 
 
 @app.post("/reset")
