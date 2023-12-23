@@ -6,7 +6,7 @@
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('index')">叫車服務</li>
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_information')">公車資訊</li>
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_stops')">公車站點</li>
-        <!-- <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_stops')">公車站點</li> -->
+        <li v-if="driver" class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('driver')">司機頁面</li>
       </ul>
     </div>
     <div class="flex ai:center@>md px:10px {py:10px;rel}@<md text:center">
@@ -31,26 +31,30 @@ Style.extend('classes', {
   tselect:'my:5px h:25px b:2|solid bg:white outline:none r:4px'
 })
 init()
+
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
 const [m_value, menu_toggle] = useToggle(true);
+
 const cookies = new Cookies();
-const authKey = ref("null")
+const authKey = ref("null");
+const driver: Ref<boolean> = ref(false);
 
 const sign_out = async () => {
-  cookies.remove("auth_key")
-  router.go(0)
-}
+  cookies.remove("auth_key");
+  cookies.remove("driver");
+  router.go(0);
+};
 
 onMounted(() => {
   try {
     const authCookie = cookies.get("auth_key");
-    if (authCookie !== null) {
-      authKey.value = authCookie;
-
-    }
+    const driverCookie = cookies.get("driver");
+    authKey.value = authCookie !== null ? authCookie : authKey.value;
+    driver.value = driverCookie === "true";
   } catch (error: any) {
     console.error(error);
   }
-})
+});
+
 </script>

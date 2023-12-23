@@ -99,7 +99,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             status_code=400, detail="Incorrect username or password")
 
     access_token = create_access_token(data={"sub": password})
-    return {"access_token": access_token, "token_type": "bearer","user_type":users_db["type"]}
+    return {"access_token": access_token, "token_type": "bearer","driver":users_db["driver"]}
 
 
 @app.post("/reset")

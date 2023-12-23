@@ -21,8 +21,8 @@
               <h2>身分</h2>
               <h4>Identity</h4>
               <select v-model="identity">
-                <option value="passenger">乘客|Passenger</option>
-                <option value="driver">司機|Driver</option>
+                <option :value="false">乘客|Passenger</option>
+                <option :value="true">司機|Driver</option>
               </select>
           </span>
         </nav>
@@ -43,7 +43,7 @@ import conf from "@/assets/conf";
 const username = ref("")
 const password = ref("")
 const email = ref("")
-const identity = ref("passenger")
+const identity = ref(false)
 
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
@@ -52,6 +52,7 @@ const cookies = new Cookies();
 
 const sign_up = async () => {
   const data = {
+    "driver":identity.value,
     "username":username.value,
     "password":password.value,
     "email":email.value
@@ -64,6 +65,7 @@ const sign_up = async () => {
   }
 }
 
+//掛載後確認是否已登入
 onMounted(() => {
   const authKey = cookies.get("auth_key")
   if (authKey !== null) {

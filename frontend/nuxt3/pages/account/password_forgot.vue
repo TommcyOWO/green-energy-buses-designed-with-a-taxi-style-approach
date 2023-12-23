@@ -37,15 +37,18 @@ import axios from 'axios';
 import conf from "@/assets/conf"
 import Cookies from 'cookies-ts';
 
+//setup router
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
 
+//bind variables
 const username = ref("")
 const email = ref("")
 const n_password = ref("")
 const v_password = ref("")
 const cookies = new Cookies();
 
+//func of reset password
 const reset = async () => {
   try {
     if (n_password.value !== v_password.value) {
@@ -68,6 +71,7 @@ const reset = async () => {
   }
 };
 
+//掛載後確認是否已登入
 onMounted(() => {
   const authKey = cookies.get("auth_key")
   if (authKey !== null) {

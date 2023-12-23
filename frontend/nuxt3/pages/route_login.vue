@@ -9,6 +9,7 @@
 </template>
 
 <script setup lang="ts">
+//定義引導 func
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
 
