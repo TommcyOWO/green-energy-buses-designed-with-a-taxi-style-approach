@@ -7,3 +7,6 @@ class sign_up_reset(BaseModel):
     password: str
     driver:bool
 
+class caller(BaseModel):
+    origin: str
+    destination:str

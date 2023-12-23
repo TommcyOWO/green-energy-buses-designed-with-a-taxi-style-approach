@@ -17,6 +17,7 @@ from core.oauth import *
 client = MongoClient("mongodb://localhost:27017/")
 db = client["database"]
 users = db.users
+wait = db.wait
 
 limiter = Limiter(key_func=get_remote_address)
 app = FastAPI(redoc_url=None)
@@ -46,8 +47,6 @@ async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
     )
 
 # 404 error handler
-
-
 @app.exception_handler(404)
 async def not_found_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
@@ -56,8 +55,6 @@ async def not_found_exception_handler(request: Request, exc: HTTPException):
     )
 
 # 405 error handler
-
-
 @app.exception_handler(405)
 async def not_found_exception_handler(request: Request, exc: HTTPException):
     return JSONResponse(
@@ -65,7 +62,6 @@ async def not_found_exception_handler(request: Request, exc: HTTPException):
         content={"ERROR": exc.detail},
     )
 
-# main
 # oauth path
 @app.post("/sign_up")
 async def user_sign_up(user: sign_up_reset):
@@ -86,7 +82,6 @@ async def user_sign_up(user: sign_up_reset):
     users.insert_one(users_db)
     return {"message": "User registered successfully"}
 
-
 @app.post("/logon")
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     username = form_data.username
@@ -101,7 +96,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(data={"sub": password})
     return {"access_token": access_token, "token_type": "bearer","driver":users_db["driver"]}
 
-
 @app.post("/reset")
 async def reset_acount(user: sign_up_reset):
     reset_acount_db = users.find_one(
@@ -113,8 +107,30 @@ async def reset_acount(user: sign_up_reset):
     h_password = password_context.hash(user.password)
     users.update_one({'name': user.username, 'email': user.email}, 
         {'$set': {'password': h_password}})
-
     return {"message": "Reset done"}
+
+# Call
+@app.post("/call")
+@limiter.limit("60/minute")
+async def call_car(rq:Request,caller:caller,token:str = Depends(oauth2_scheme)):
+    username = decode_access_token(token)
+    origins = caller.origins
+    destination = caller.destination
+    # try:
+    #     check = users.find_one({"username":username})
+    #     raise HTTPException(status_code=400, detail="U just sent a request.") if check != None else None
+    # except:
+    #     pass
+    wait.insert_one({
+        "username" : username,
+        "origins": origins,
+        "destination": destination
+    })
+    return {"message": "Sent request done."}
+
+@app.get("")
+async def get_pass():
+    pass
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

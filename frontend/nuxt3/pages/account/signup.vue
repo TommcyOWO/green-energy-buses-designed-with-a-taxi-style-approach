@@ -1,6 +1,6 @@
 <template>
     <div class="abs top:50% left:50% translate(-50%,-50%)">
-      <div class="w:300px rbr:40 b:2.3|solid bg:white">
+      <div class="w:300px mt:150px rbr:40 b:2.3|solid bg:white">
         <nav class="mt:20px m:40px">
           <span class="block pt:10px">
             <h2>使用者名稱</h2>
@@ -20,7 +20,7 @@
           <span class="block my:10px">
               <h2>身分</h2>
               <h4>Identity</h4>
-              <select v-model="identity">
+              <select class="tselect" v-model="identity">
                 <option :value="false">乘客|Passenger</option>
                 <option :value="true">司機|Driver</option>
               </select>
@@ -40,16 +40,18 @@ import axios from "axios";
 import Cookies from 'cookies-ts';
 import conf from "@/assets/conf";
 
+//setup
 const username = ref("")
 const password = ref("")
 const email = ref("")
 const identity = ref(false)
 
+//setup router
 const router = useRouter();
 const moveTo = (path: string) => router.push({ name: path });
 const cookies = new Cookies();
 
-
+//func of sign up
 const sign_up = async () => {
   const data = {
     "driver":identity.value,
