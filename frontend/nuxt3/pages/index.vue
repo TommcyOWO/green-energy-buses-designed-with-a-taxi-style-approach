@@ -5,7 +5,7 @@
       <span class="block">
         <h3>出發地</h3>
         <h4>Origin</h4>
-        <select class="tselect">
+        <select v-model="origin_" class="tselect">
           <option value="1">站點1</option>
           <option value="2">站點2</option>
           <option value="3">站點3</option>
@@ -15,7 +15,7 @@
       <span class="block my:10px">
         <h3>目的地</h3>
         <h4>Destination</h4>
-        <select class="tselect">
+        <select v-model="destination_" class="tselect">
           <option value="1">站點1</option>
           <option value="2">站點2</option>
           <option value="3">站點3</option>
@@ -24,20 +24,49 @@
       </span>
     </nav>
     <section class="flex jc:center ai:center my:20px">
-      <button class="btn blcok cursor:pointer">叫車</button>
+      <button @click="call" :class="{ 'cursor:not-allowed': clicked, 'cursor:pointer': !clicked }" class="btn blcok">叫車</button>
     </section>
 </div>
 </template>
 
 <script setup lang="ts">
-import Cookies from "cookies-ts";
+import Cookies from "cookies-ts"
+import axios from "axios";
+import conf from  "@/assets/conf"
 
 //setup
 const cookies = new Cookies();
 const router = useRouter();
 
-//掛載完後檢查token
-onMounted(() => {
-  const authKey = cookies.get("auth_key") || router.push({ name: "route_login" })
-})
+const origin_ = ref('1')
+const destination_ = ref('1')
+const authkey = ref("");
+const clicked = ref(false)
+
+const call = async () => {
+  const data = {
+    origin: origin_.value,
+    destination: destination_.value
+  };
+  const headers = {
+    'Authorization': `Bearer ${authkey.value}`,
+    'Content-Type': 'application/json'
+  };
+  try {
+    const response = await axios.post(conf.urls + "call", data,{headers});
+  } catch (error) {
+    clicked.value = true
+  }
+};
+
+// 掛載完後檢查 token
+onMounted(async () => {
+  const token = cookies.get("auth_key");
+  if (token) {
+    authkey.value = token;
+  } else {
+    await router.push({ name: "route_login" });
+  }
+});
+
 </script>

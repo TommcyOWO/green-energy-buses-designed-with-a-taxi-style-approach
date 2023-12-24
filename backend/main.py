@@ -8,6 +8,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from pymongo import MongoClient
+from collections import OrderedDict
 
 #引入模組以及驗證系統
 from core.modul import *
@@ -25,7 +26,7 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 origins = [
-    "*"
+    "http://192.168.1.109:3000"
     ]
 
 app.add_middleware(
@@ -37,8 +38,6 @@ app.add_middleware(
 )
 
 # 阻擋request
-
-
 @app.exception_handler(RateLimitExceeded)
 async def rate_limit_exceeded_handler(request: Request, exc: RateLimitExceeded):
     return JSONResponse(
@@ -66,11 +65,9 @@ async def not_found_exception_handler(request: Request, exc: HTTPException):
 @app.post("/sign_up")
 async def user_sign_up(user: sign_up_reset):
     users_db = users.find_one({"username": user.username})
-    if users_db != None:
-        raise HTTPException(status_code=400, detail="Username already exists")
+    if users_db != None:raise HTTPException(status_code=400, detail="Username already exists")
     users_db = users.find_one({"email": user.email})
-    if users_db != None:
-        raise HTTPException(status_code=400, detail="Email already exists")
+    if users_db != None:raise HTTPException(status_code=400, detail="Email already exists")
 
     hashed_password = password_context.hash(user.password)
     users_db = {
@@ -89,20 +86,16 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     users_db = users.find_one({"username": username})
     verify_pas = password_context.verify(password, users_db["password"])
-    if users_db == None or verify_pas == None:
-        raise HTTPException(
-            status_code=400, detail="Incorrect username or password")
+    if users_db == None or verify_pas == None:raise HTTPException(status_code=400, detail="Incorrect username or password")
 
-    access_token = create_access_token(data={"sub": password})
+    access_token = create_access_token(data={"sub": form_data.username})
     return {"access_token": access_token, "token_type": "bearer","driver":users_db["driver"]}
 
 @app.post("/reset")
 async def reset_acount(user: sign_up_reset):
     reset_acount_db = users.find_one(
         {'username': user.username, 'email': user.email})
-    if reset_acount_db == None:
-        raise HTTPException(
-            status_code=400, detail="Username or Email not match.")
+    if reset_acount_db == None:raise HTTPException(status_code=400, detail="Username or Email not match.")
 
     h_password = password_context.hash(user.password)
     users.update_one({'name': user.username, 'email': user.email}, 
@@ -112,15 +105,12 @@ async def reset_acount(user: sign_up_reset):
 # Call
 @app.post("/call")
 @limiter.limit("60/minute")
-async def call_car(rq:Request,caller:caller,token:str = Depends(oauth2_scheme)):
+async def call_car(request:Request, caller: caller, token: str = Depends(oauth2_scheme)):
     username = decode_access_token(token)
-    origins = caller.origins
+    origins = caller.origin
     destination = caller.destination
-    # try:
-    #     check = users.find_one({"username":username})
-    #     raise HTTPException(status_code=400, detail="U just sent a request.") if check != None else None
-    # except:
-    #     pass
+    check = wait.find_one({"username":username})
+    if check != None:raise HTTPException(status_code=400, detail="U just sent a request.")
     wait.insert_one({
         "username" : username,
         "origins": origins,
@@ -128,9 +118,25 @@ async def call_car(rq:Request,caller:caller,token:str = Depends(oauth2_scheme)):
     })
     return {"message": "Sent request done."}
 
-@app.get("")
-async def get_pass():
-    pass
+@app.get("/get_passenger")
+@limiter.limit("60/minute")
+async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
+    try:
+        result_dict = OrderedDict()
+
+        for data in wait.find():
+            key = tuple(OrderedDict(data).items())[:-1]
+
+            if key not in result_dict:
+                result_dict[key] = {"person": 0, **dict(data.items())}
+
+            result_dict[key]["person"] += 1
+
+        result_list = list(result_dict.values())
+
+        return result_list
+    except:
+        raise HTTPException(status_code=400,detail="There are currently no passengers")
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

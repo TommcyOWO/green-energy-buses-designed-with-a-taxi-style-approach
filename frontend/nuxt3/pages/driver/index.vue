@@ -4,16 +4,40 @@
       <div>
         
       </div>
-      <button class="btn">搜尋乘客</button>
+      <button @click="get_passenger" class="btn cursor:pointer">搜尋乘客</button>
     </section>
   </div>
 </template>
 
 <script setup lang="ts">
+import Cookies from 'cookies-ts';
 import axios from 'axios';
 import conf from '@/assets/conf'
 
-const get_passenger =async() => {
-  const responses = axios.get(conf.urls+'')
+const cookies = new Cookies();
+const router = useRouter();
+const authkey = ref("");
+
+const get_passenger = async() => {
+  const headers = {
+    'Authorization': `Bearer ${authkey.value}`,
+    'Content-Type': 'application/json'
+  };
+  try {
+    const responses = axios.get(conf.urls+'get_passenger',{headers});
+    console.log(responses)
+  } catch (error) {
+    
+  }
 }
+
+// 掛載完後檢查 token
+onMounted(async () => {
+  const token = cookies.get("auth_key");
+  if (token) {
+    authkey.value = token;
+  } else {
+    await router.push({ name: "route_login" });
+  }
+});
 </script>

@@ -11,10 +11,17 @@ import Cookies from "cookies-ts";
 const cookies = new Cookies();
 const router = useRouter();
 
-//掛載完後檢查token
-onMounted(() => {
-  const authKey = cookies.get("auth_key") || router.push({ name: "route_login" })
-})
+const authkey = ref("");
+
+// 掛載完後檢查 token
+onMounted(async () => {
+  const token = cookies.get("auth_key");
+  if (token) {
+    authkey.value = token;
+  } else {
+    await router.push({ name: "route_login" });
+  }
+});
 
 </script>
 
