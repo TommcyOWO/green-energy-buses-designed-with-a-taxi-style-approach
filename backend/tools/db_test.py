@@ -16,3 +16,5 @@ for data in wait.find():
 
 # 將統計結果轉換為列表
 result_list = list(result_dict.values())
+
+print(result_list)

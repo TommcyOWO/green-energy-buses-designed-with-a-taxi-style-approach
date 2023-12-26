@@ -18,18 +18,23 @@ const cookies = new Cookies();
 const router = useRouter();
 const authkey = ref("");
 
-const get_passenger = async() => {
+const get_passenger = async () => {
   const headers = {
     'Authorization': `Bearer ${authkey.value}`,
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   };
+
   try {
-    const responses = axios.get(conf.urls+'get_passenger',{headers});
-    console.log(responses)
+    const response = await axios.get(conf.urls + 'get_passenger', {
+      headers,
+      withCredentials: true,
+    });
+
+    console.log(response);
   } catch (error) {
-    
+    console.error(error);
   }
-}
+};
 
 // 掛載完後檢查 token
 onMounted(async () => {

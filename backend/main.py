@@ -26,7 +26,7 @@ app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 origins = [
-    "http://192.168.1.109:3000"
+    "http://192.168.165.249:3000"
     ]
 
 app.add_middleware(
@@ -133,7 +133,7 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
             result_dict[key]["person"] += 1
 
         result_list = list(result_dict.values())
-
+        print(result_list)
         return result_list
     except:
         raise HTTPException(status_code=400,detail="There are currently no passengers")
