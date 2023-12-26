@@ -20,14 +20,12 @@ const authkey = ref("");
 
 const get_passenger = async () => {
   const headers = {
-    'Authorization': `Bearer ${authkey.value}`,
-    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${authkey.value}`
   };
 
   try {
     const response = await axios.get(conf.urls + 'get_passenger', {
-      headers,
-      withCredentials: true,
+      headers
     });
 
     console.log(response);

@@ -9,6 +9,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from pymongo import MongoClient
 from collections import OrderedDict
+import json
 
 #引入模組以及驗證系統
 from core.modul import *
@@ -25,9 +26,7 @@ app = FastAPI(redoc_url=None)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
-origins = [
-    "http://192.168.165.249:3000"
-    ]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -132,10 +131,10 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
 
             result_dict[key]["person"] += 1
 
-        result_list = list(result_dict.values())
-        print(result_list)
-        return result_list
+        result_json = json.dumps(result_dict, ensure_ascii=False)
+        return JSONResponse(result_json)
     except:
+        print("nope")
         raise HTTPException(status_code=400,detail="There are currently no passengers")
 
 if __name__ == "__main__":
