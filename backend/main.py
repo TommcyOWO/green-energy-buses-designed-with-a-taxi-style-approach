@@ -117,6 +117,7 @@ async def call_car(request:Request, caller: caller, token: str = Depends(oauth2_
     })
     return {"message": "Sent request done."}
 
+# 回傳有問題
 @app.get("/get_passenger")
 @limiter.limit("60/minute")
 async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
