@@ -137,7 +137,7 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
         result_list = list(result_dict.values())
         result_json = json.dumps(result_list, ensure_ascii=False)
         
-        return JSONResponse(content=result_json)
+        return result_json
     except:
         print("nope")
         raise HTTPException(status_code=400,detail="There are currently no passengers")

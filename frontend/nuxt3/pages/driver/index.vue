@@ -1,13 +1,13 @@
 <template>
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
     <section>
-      <!-- 在 v-for 循環中使用可選鏈接運算符 -->
       <ul>
-        <li v-for="item in passengers">
-          <p>起始地點: {{ item }}</p>
+        <li v-for="item in passengers" :key="item._id[0]">
+          <p>起始點: {{ item.origins }}</p>
+          <p>目的地: {{ item.destination }}</p>
+          <p>使用者: {{ item.users.join(', ') }}</p>
         </li>
       </ul>
-
       <button @click="get_passenger" class="btn cursor:pointer">搜尋乘客</button>
     </section>
   </div>
@@ -32,8 +32,7 @@ const get_passenger = async () => {
     const response = await axios.get(conf.urls + 'get_passenger', {
       headers
     });
-    passengers.value = response.data;
-    console.log(response.data);
+    passengers.value = JSON.parse(response.data);
   } catch (error) {
     console.error(error);
   }
