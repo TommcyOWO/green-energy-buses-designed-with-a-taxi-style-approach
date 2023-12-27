@@ -1,9 +1,11 @@
 <template>
   <div class="abs top:50% left:50% translate(-50%,-50%)">
     <section>
-      <div>
-        
-      </div>
+      <nav>
+        <span v-for="passenger in passengers">
+          {{ passenger }}
+        </span>
+      </nav>
       <button @click="get_passenger" class="btn cursor:pointer">搜尋乘客</button>
     </section>
   </div>
@@ -17,6 +19,7 @@ import conf from '@/assets/conf'
 const cookies = new Cookies();
 const router = useRouter();
 const authkey = ref("");
+const passengers = ref([]);
 
 const get_passenger = async () => {
   const headers = {
@@ -27,8 +30,9 @@ const get_passenger = async () => {
     const response = await axios.get(conf.urls + 'get_passenger', {
       headers
     });
-
-    console.log(response);
+    passengers.value = response.data;
+    console.log(response.data);
+    console.log(passengers.value);
   } catch (error) {
     console.error(error);
   }
