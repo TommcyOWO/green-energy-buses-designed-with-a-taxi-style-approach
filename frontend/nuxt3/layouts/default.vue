@@ -4,7 +4,6 @@
       <IconMenu2 @click="menu_toggle()" class="flex hide@>md" />
       <ul :class="{ 'hidden@<md': m_value }" class="list-style:none flex@>md f:20px">
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('index')">叫車服務</li>
-        <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_information')">公車資訊</li>
         <li class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('bus_stops')">公車站點</li>
         <li v-if="driver" class="cursor:pointer m:10px f:semibold f:20px" @click="moveTo('driver')">司機頁面</li>
       </ul>

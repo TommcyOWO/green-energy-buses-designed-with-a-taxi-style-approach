@@ -1,11 +1,13 @@
 <template>
-  <div class="abs top:50% left:50% translate(-50%,-50%)">
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
     <section>
-      <nav>
-        <span v-for="passenger in passengers">
-          {{ passenger }}
-        </span>
-      </nav>
+      <!-- 在 v-for 循環中使用可選鏈接運算符 -->
+      <ul>
+        <li v-for="item in passengers">
+          <p>起始地點: {{ item }}</p>
+        </li>
+      </ul>
+
       <button @click="get_passenger" class="btn cursor:pointer">搜尋乘客</button>
     </section>
   </div>
@@ -19,7 +21,7 @@ import conf from '@/assets/conf'
 const cookies = new Cookies();
 const router = useRouter();
 const authkey = ref("");
-const passengers = ref([]);
+const passengers = ref();
 
 const get_passenger = async () => {
   const headers = {
@@ -32,7 +34,6 @@ const get_passenger = async () => {
     });
     passengers.value = response.data;
     console.log(response.data);
-    console.log(passengers.value);
   } catch (error) {
     console.error(error);
   }
