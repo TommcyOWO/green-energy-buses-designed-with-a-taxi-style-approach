@@ -104,10 +104,10 @@ async def reset_acount(user: sign_up_reset):
 # Call
 @app.post("/call")
 @limiter.limit("60/minute")
-async def call_car(request:Request, caller: caller, token: str = Depends(oauth2_scheme)):
+async def call_car(request:Request, modul: caller, token: str = Depends(oauth2_scheme)):
     username = decode_access_token(token)
-    origins = caller.origin
-    destination = caller.destination
+    origins = modul.origin
+    destination = modul.destination
     check = wait.find_one({"username":username})
     if check != None:raise HTTPException(status_code=400, detail="U just sent a request.")
     wait.insert_one({
@@ -117,7 +117,7 @@ async def call_car(request:Request, caller: caller, token: str = Depends(oauth2_
     })
     return {"message": "Sent request done."}
 
-# BUG 沒有正確統計
+# Get passenger
 @app.get("/get_passenger")
 @limiter.limit("60/minute")
 async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
@@ -141,6 +141,37 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
     except:
         print("nope")
         raise HTTPException(status_code=400,detail="There are currently no passengers")
+
+#Confirm user data
+@app.post("/confirm")
+@limiter.limit("60/minute")
+async def confirm(request:Request,modul:ConfirmDataModul,token:str = Depends(oauth2_scheme)):
+    username = decode_access_token(token)
+    print(username)
+    return {"message":"okey"}
+    # try:
+        # for user_data in modul.data:
+            # print(user_data.destination)
+            # print(user_data.origins)
+# 
+            # db[username].insert_one({
+                # "destination": user_data.destination,
+                # "origins": user_data.origins,
+                # "users": user_data.users,
+                # "length": user_data.length,
+                # "_id": user_data._id
+            # })
+# 
+            # wait.delete_many({
+                # "destination": user_data.destination,
+                # "origins": user_data.origins,
+                # "_id": {"$in": user_data._id}
+            # })
+        # return {"message":"ok"}
+    # except:
+        # return
+
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)

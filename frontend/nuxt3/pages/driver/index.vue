@@ -10,7 +10,7 @@
       </nav>
       <div>
         <div v-if="passengers">
-          <button @click="confirmAction" class="btn m:10px cursor:pointer">確定</button>
+          <button @click="confirm" class="btn m:10px cursor:pointer">確定</button>
           <button @click="router.go(0)" class="btn m:10px cursor:pointer">取消</button>
         </div>
         <button v-else @click="get_passenger" class="btn cursor:pointer m:10px">搜尋乘客</button>
@@ -23,31 +23,38 @@
 import Cookies from 'cookies-ts';
 import axios from 'axios';
 import conf from '@/assets/conf'
-import { useLocalStorage } from '@vueuse/core';
 
 const cookies = new Cookies();
 const router = useRouter();
 const authkey = ref("");
 const passengers = ref();
+let passengers_data: any
+
+const headers = {
+  'Authorization': `Bearer ${authkey.value}`
+};
 
 const get_passenger = async () => {
-  const headers = {
-    'Authorization': `Bearer ${authkey.value}`
-  };
-
   try {
-    const response = await axios.get(conf.urls + 'get_passenger', {
-      headers
-    });
-    passengers.value = JSON.parse(response.data);
+    const response = await axios.get(conf.urls + 'get_passenger', {headers});
+    passengers_data = passengers.value = JSON.parse(response.data);
+    console.log(JSON.parse(response.data))
   } catch (error) {
     console.error(error);
   }
 };
 
-const confirmAction =async () => {
-  const passengersData = useLocalStorage('passengersData', JSON.stringify(passengers.value));
-  console.log(passengersData.value)
+const confirm =async () => {
+  const datas = {
+    data: passengers_data
+  }
+  try {
+    // const responses = await axios.post(conf.urls+"confirm",datas,{headers})
+    // console.log(responses.data)
+    console.log(datas)
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 // 掛載完後檢查 token

@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from typing import List
 
 class sign_up_reset(BaseModel):
     email: EmailStr
@@ -9,3 +10,14 @@ class sign_up_reset(BaseModel):
 class caller(BaseModel):
     origin: str
     destination:str
+
+class ConfirmUserData(BaseModel):
+    destination: str
+    origins: str
+    users: List[str]
+    length: int
+    _id: List[str]
+
+
+class ConfirmDataModul(BaseModel):
+    data: List[ConfirmUserData]
