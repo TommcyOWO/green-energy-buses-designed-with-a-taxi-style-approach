@@ -145,31 +145,23 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
 #Confirm user data
 @app.post("/confirm")
 @limiter.limit("60/minute")
-async def confirm(request:Request,modul:ConfirmDataModul,token:str = Depends(oauth2_scheme)):
+async def confirm(request: Request,modul:ConfirmDataModul, token: str = Depends(oauth2_scheme)):
     username = decode_access_token(token)
-    print(username)
-    return {"message":"okey"}
-    # try:
-        # for user_data in modul.data:
-            # print(user_data.destination)
-            # print(user_data.origins)
-# 
-            # db[username].insert_one({
-                # "destination": user_data.destination,
-                # "origins": user_data.origins,
-                # "users": user_data.users,
-                # "length": user_data.length,
-                # "_id": user_data._id
-            # })
-# 
-            # wait.delete_many({
-                # "destination": user_data.destination,
-                # "origins": user_data.origins,
-                # "_id": {"$in": user_data._id}
-            # })
-        # return {"message":"ok"}
-    # except:
-        # return
+    dirver_db = db[username]
+    for user_data in modul.data:
+        print(user_data)
+        # dirver_db.insert_one({
+            # "destination": user_data.destination,
+            # "origins": user_data.origins,
+            # "users": user_data.users,
+            # "wait_id": user_data._id
+        # })
+        # wait.delete_many({
+            # "destination": user_data.destination,
+            # "origins": user_data.origins,
+            # "_id": {"$in": user_data._id}
+        # })
+    return {"message":"ok"}
 
 
 

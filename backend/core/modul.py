@@ -15,7 +15,6 @@ class ConfirmUserData(BaseModel):
     destination: str
     origins: str
     users: List[str]
-    length: int
     _id: List[str]
 
 

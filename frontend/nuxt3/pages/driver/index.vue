@@ -30,11 +30,11 @@ const authkey = ref("");
 const passengers = ref();
 let passengers_data: any
 
-const headers = {
-  'Authorization': `Bearer ${authkey.value}`
-};
-
 const get_passenger = async () => {
+  const headers = {
+    'Authorization': `Bearer ${authkey.value}`,
+    'Content-Type': 'application/json'
+  };
   try {
     const response = await axios.get(conf.urls + 'get_passenger', {headers});
     passengers_data = passengers.value = JSON.parse(response.data);
@@ -45,13 +45,17 @@ const get_passenger = async () => {
 };
 
 const confirm =async () => {
+  const headers = {
+    'Authorization': `Bearer ${authkey.value}`,
+    'Content-Type': 'application/json'
+  };
   const datas = {
     data: passengers_data
   }
   try {
-    // const responses = await axios.post(conf.urls+"confirm",datas,{headers})
-    // console.log(responses.data)
-    console.log(datas)
+    const responses = await axios.post(conf.urls+"confirm",datas,{headers})
+    console.log(responses.data)
+    // console.log(datas)
   } catch (error) {
     console.error(error)
   }
