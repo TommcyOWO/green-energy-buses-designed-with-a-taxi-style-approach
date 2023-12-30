@@ -128,9 +128,9 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
         for data in wait.find():
             key = (data["origins"], data["destination"])  # 使用元組作為鍵
             if key not in result_dict:
-                result_dict[key] = {"_id": [], "origins": data["origins"],
+                result_dict[key] = {"ids": [], "origins": data["origins"],
                                     "destination": data["destination"], "users": []}
-            result_dict[key]["_id"].append(str(data["_id"]))
+            result_dict[key]["ids"].append(str(data["_id"]))
             result_dict[key]["users"].append(data["username"])
         
         # 將統計結果轉換為列表
@@ -147,20 +147,26 @@ async def get_pass(request:Request,token:str = Depends(oauth2_scheme)):
 @limiter.limit("60/minute")
 async def confirm(request: Request,modul:ConfirmDataModul, token: str = Depends(oauth2_scheme)):
     username = decode_access_token(token)
-    dirver_db = db[username]
+    dirver_db = db[str(username)]
     for user_data in modul.data:
-        print(user_data)
+        # print(user_data)
         # dirver_db.insert_one({
             # "destination": user_data.destination,
             # "origins": user_data.origins,
             # "users": user_data.users,
-            # "wait_id": user_data._id
+            # "wait_id": user_data.ids
         # })
-        # wait.delete_many({
-            # "destination": user_data.destination,
-            # "origins": user_data.origins,
-            # "_id": {"$in": user_data._id}
-        # })
+        print("ok")
+        wait.delete_one({
+            "username": {"$in": user_data.users},
+            "destination": user_data.destination,
+            "origins": user_data.origins,
+        })
+        print({
+            "username": {"$in": user_data.users},
+            "destination": user_data.destination,
+            "origins": user_data.origins,
+        })
     return {"message":"ok"}
 
 

@@ -15,7 +15,7 @@ class ConfirmUserData(BaseModel):
     destination: str
     origins: str
     users: List[str]
-    _id: List[str]
+    ids: List[str]
 
 
 class ConfirmDataModul(BaseModel):
