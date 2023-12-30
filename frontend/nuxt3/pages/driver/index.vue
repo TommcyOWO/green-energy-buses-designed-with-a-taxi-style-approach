@@ -1,6 +1,6 @@
 <template>
   <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-    <section class="text:center">
+    <section v-if="!confirms_data" class="text:center">
       <nav>
         <span class="p:20px" v-for="item in passengers" :key="item.ids[0]">
           <p>起始點: {{ item.origins }}</p>
@@ -16,7 +16,10 @@
         <button v-else @click="get_passenger" class="btn cursor:pointer m:10px">搜尋乘客</button>
       </div>
     </section>
-  </div>
+    <section v-else class="text:center">
+      <button @click="finish" class="btn cursor:pointer">結束</button>
+    </section>
+</div>
 </template>
 
 <script setup lang="ts">
@@ -27,7 +30,9 @@ import conf from '@/assets/conf'
 const cookies = new Cookies();
 const router = useRouter();
 const authkey = ref("");
+
 const passengers = ref();
+const confirms_data = ref()
 let passengers_data: any
 
 const get_passenger = async () => {
@@ -54,12 +59,34 @@ const confirm =async () => {
   }
   try {
     const responses = await axios.post(conf.urls+"confirm",datas,{headers})
-    console.log(responses.data)
-    // console.log(datas)
+    confirms_data.value = responses.data
   } catch (error) {
     console.error(error)
   }
 }
+
+const finish = async () => {
+  try {
+    const response = await axios.post(
+      conf.urls + "finish",
+      null,
+      {
+        headers: {
+          'Authorization': `Bearer ${authkey.value}`
+        }
+      }
+    );
+
+    passengers.value = confirms_data.value = passengers_data = null;
+    router.go(0);
+  } catch (error:any) {
+    if (error.response && error.response.status === 401) {
+      console.error('未授權錯誤:', error.response.data);
+    } else {
+      console.error('請求錯誤:', error.message);
+    }
+  }
+};
 
 // 掛載完後檢查 token
 onMounted(async () => {

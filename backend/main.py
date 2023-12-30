@@ -149,27 +149,26 @@ async def confirm(request: Request,modul:ConfirmDataModul, token: str = Depends(
     username = decode_access_token(token)
     dirver_db = db[str(username)]
     for user_data in modul.data:
-        # print(user_data)
-        # dirver_db.insert_one({
-            # "destination": user_data.destination,
-            # "origins": user_data.origins,
-            # "users": user_data.users,
-            # "wait_id": user_data.ids
-        # })
-        print("ok")
+        print(user_data)
+        dirver_db.insert_one({
+            "destination": user_data.destination,
+            "origins": user_data.origins,
+            "users": user_data.users,
+            "wait_id": user_data.ids
+        })
         wait.delete_one({
             "username": {"$in": user_data.users},
             "destination": user_data.destination,
             "origins": user_data.origins,
         })
-        print({
-            "username": {"$in": user_data.users},
-            "destination": user_data.destination,
-            "origins": user_data.origins,
-        })
-    return {"message":"ok"}
+    return {"message":"done"}
 
-
+@app.post("/finish")
+@limiter.limit("60/minute")
+async def finish(request:Request,token:str=Depends(oauth2_scheme)):
+    username = decode_access_token(token)
+    db[str(username)].drop()
+    return {"message":"remove done"}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=5000)
