@@ -17,6 +17,13 @@
       </div>
     </section>
     <section v-else class="text:center">
+        <nav>
+        <span class="p:20px" v-for="item in passengers" :key="item.ids[0]">
+          <p>起始點: {{ item.origins }}</p>
+          <p>目的地: {{ item.destination }}</p>
+          <p>乘客: {{ item.users.join(', ') }}</p>
+        </span>
+        </nav>
       <button @click="finish" class="btn cursor:pointer">結束</button>
     </section>
 </div>
